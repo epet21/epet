@@ -58,20 +58,20 @@ const LogIn = () => {
   }
     
   return (
-    <>
-      <form onSubmit={pDefault}>
+    <main className="mainLogIn">
+      <form onSubmit={pDefault} className="form">
           <input type="email" name="email" id="email" placeholder="email" />
           <input type="password" name="password" id="password" placeholder="password" />
           <input type="text" name="petname" id="petname" placeholder="pet name" />
           <input type="submit" onClick={submit} value="Register"/>
       </form>
 
-      <form onSubmit={pDefault}>
+      <form onSubmit={pDefault} className="form">
           <input type="email" name="email" id="email" placeholder="email" />
           <input type="password" name="password" id="password" placeholder="password" />
           <input type="submit" onClick={submit} value="Log In"/>
       </form>
-    </>
+    </main>
   )
 }
 

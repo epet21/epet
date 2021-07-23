@@ -1,6 +1,7 @@
 import firebase from "../firebase";
 import {useState} from "react";
 import {useHistory} from "react-router-dom";
+import logo from "../assets/logo.png"
 
 const Header = () => {
 
@@ -30,11 +31,14 @@ const Header = () => {
 
     return (
         <header>
-            {
-                loggedIn
-                ? <button onClick={signOut}>Sign Out</button>
-                : <p>Please Sign In</p>
-            }
+            <img src={logo} alt="App logo"/>
+            <div className="headerLogIn">
+                {
+                    loggedIn
+                    ? <button onClick={signOut}>Sign Out</button>
+                    : null
+                }
+            </div>
         </header>
     )
 }
