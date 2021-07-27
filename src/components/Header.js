@@ -5,16 +5,14 @@ import logo from "../assets/logo.png"
 
 const Header = () => {
 
+    // Log In State, and pushes uses to main page if logged out
     const [loggedIn, setLoggedIn] = useState();
-    
     if (!loggedIn) {useHistory().push("/")};
 
-    // User Sign Out
+    // User Sign Out function
     const signOut = () => {
         firebase.auth().signOut().then(() => {
-            // Sign-out successful.
         }).catch((error) => {
-            // An error happened.
             alert(error.message);
         });
     }
@@ -22,7 +20,6 @@ const Header = () => {
     // Listens to whether user is logged in/out
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-            var uid = user.uid;
             setLoggedIn(true)
         } else {
             setLoggedIn(false)

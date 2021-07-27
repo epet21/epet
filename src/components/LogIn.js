@@ -33,7 +33,9 @@ const LogIn = () => {
           const dbRef = firebase.database().ref(user.$.W).set({
             date: date.getTime(),
             state: 1,
-            petName: petName
+            petName: petName,
+            health: 100,
+            happy: 100
           });
         })
         .catch((error) => {
@@ -48,7 +50,7 @@ const LogIn = () => {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
-          var user = userCredential.user;
+          var userID = userCredential.user.$.W;
         })
         .catch((error) => {
           var errorCode = error.code;
