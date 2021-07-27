@@ -11,41 +11,39 @@ const Pet = () => {
     const [userData, setUserData] = useState({});
     const [time, setTime] = useState(0);
     const [stateName, setStateName] = useState(0);
+    const [userID, setUserID] = useState("")
     const history = useHistory();
+
     if (hatched) {history.push("/main")};
 
-    
+    const timer = () => {
+        const date = new Date()
+        setTime(date.getTime());
+    }
+
     useEffect(() => {
-        
-        firebase.auth().onAuthStateChanged((user) => {
+
+        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
             if (user) {
+                setUserID(user.uid);
                 const dbRef = firebase.database().ref(user.uid)
                 dbRef.on("value", (data) => {
                     setUserData(data.val())
-
-                    if (hatched === true) {
-                        const hatchedDate = new Date();
-                        dbRef.update({
-                            hatched: true,
-                            hatchedDate: hatchedDate.getTime()
-                    })}
-
-                    const timer = () => {
-                        const date = new Date()
-                        setTime(date.getTime());
-                    }
-
                     timer();
-                    const timingFunction = setInterval(timer, 3000);
-                    // 30!!!
-                    if (hatched) {clearInterval(timingFunction)}
-                })
-            } else {
-                
+                })                
             }
         })
 
-    }, [hatched]);
+        unsubscribe();
+
+        const timingFunction = setInterval(timer, 3000); // 30!!!
+        
+        // Cleans up timer
+        return () => {
+            clearInterval(timingFunction)
+        }
+
+    }, []);
 
     useEffect(() => {
 
@@ -55,19 +53,26 @@ const Pet = () => {
             if ((userData.date + 3000) > time) {
                 setHatched(false)
                 setStateName(1)
-                console.log(1)
             } else if ((userData.date + 6000) > time) {
                 setHatched(false)
                 setStateName(2)
-                console.log(2)
             } else if ((userData.date + 9000) > time) {
                 setHatched(false)
                 setStateName(3)
-                console.log(3)
             } else {
                 setHatched(true)
+                if (!userData.hatched) {
+                    const dbRef = firebase.database().ref(userID)
+                    const hatchedDate = new Date();
+                    dbRef.update({
+                        hatched: true,
+                        hatchedDate: hatchedDate.getTime()
+                    })
+                }
             }
         }
+
+        return
 
     }, [time])
 

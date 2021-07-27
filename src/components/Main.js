@@ -13,7 +13,6 @@ const Main = () => {
         } else {
             setLoggedIn(false)
         }
-        
     })
 
     return (
