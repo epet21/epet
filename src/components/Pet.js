@@ -14,15 +14,21 @@ const Pet = () => {
     const history = useHistory();
     if (hatched) {history.push("/main")};
 
+    
     useEffect(() => {
-
+        
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 const dbRef = firebase.database().ref(user.uid)
                 dbRef.on("value", (data) => {
                     setUserData(data.val())
 
-                    if (hatched) {dbRef.update({hatched: true})}
+                    if (hatched === true) {
+                        const hatchedDate = new Date();
+                        dbRef.update({
+                            hatched: true,
+                            hatchedDate: hatchedDate.getTime()
+                    })}
 
                     const timer = () => {
                         const date = new Date()
@@ -30,7 +36,8 @@ const Pet = () => {
                     }
 
                     timer();
-                    const timingFunction = setInterval(timer, 60000);
+                    const timingFunction = setInterval(timer, 3000);
+                    // 30!!!
                     if (hatched) {clearInterval(timingFunction)}
                 })
             } else {
@@ -38,20 +45,25 @@ const Pet = () => {
             }
         })
 
-    }, []);
+    }, [hatched]);
 
     useEffect(() => {
 
+        // 30, 30, 30
+
         if (userData.date) {
-            if ((userData.date + 180000) > time) {
+            if ((userData.date + 3000) > time) {
                 setHatched(false)
                 setStateName(1)
-            } else if ((userData.date + 360000) > time) {
+                console.log(1)
+            } else if ((userData.date + 6000) > time) {
                 setHatched(false)
                 setStateName(2)
-            } else if ((userData.date + 420000) > time) {
+                console.log(2)
+            } else if ((userData.date + 9000) > time) {
                 setHatched(false)
                 setStateName(3)
+                console.log(3)
             } else {
                 setHatched(true)
             }
