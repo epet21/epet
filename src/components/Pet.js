@@ -93,7 +93,7 @@ const Pet = () => {
                 ?
                     hatched
                     ? (<p>Wowza! Eggo Hatched!</p>)
-                    : (<img src={eggReturn()} className="egg" alt={`Image of Egg ${stateName}`}/>)
+                    : (<img src={eggReturn()} className="egg" alt={`Egg of ${stateName}`}/>)
                 : <p>Loading...</p>
             }
         </main>

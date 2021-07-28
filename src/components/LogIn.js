@@ -30,7 +30,7 @@ const LogIn = () => {
           // New user signed in. Create user object in DB
           const user = userCredential.user;
           const date = new Date();
-          const dbRef = firebase.database().ref(user.$.W).set({
+          firebase.database().ref(user.$.W).set({
             date: date.getTime(),
             state: 1,
             petName: petName,
@@ -39,8 +39,8 @@ const LogIn = () => {
           });
         })
         .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          // var errorCode = error.code;
+          let errorMessage = error.message;
           alert(errorMessage);
         });
   }
@@ -50,11 +50,11 @@ const LogIn = () => {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
-          var userID = userCredential.user.$.W;
+          // var userID = userCredential.user.$.W;
         })
         .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          // var errorCode = error.code;
+          let errorMessage = error.message;
           alert(errorMessage);
         });
   }

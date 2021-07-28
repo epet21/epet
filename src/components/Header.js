@@ -6,8 +6,9 @@ import logo from "../assets/logo.png"
 const Header = () => {
 
     // Log In State, and pushes uses to main page if logged out
+    let history = useHistory();
     const [loggedIn, setLoggedIn] = useState();
-    if (!loggedIn) {useHistory().push("/")};
+    if (!loggedIn) {history.push("/")};
 
     // User Sign Out function
     const signOut = () => {
