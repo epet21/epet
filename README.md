@@ -29,3 +29,5 @@ Basic Overview:
  <!-- - - Age, Stuff -->
 
  <!-- HANDLE ERRORS AND PAGE DISPLAYS IF LOGGED OUT? -->
+
+ <!-- Change vars to let -->
