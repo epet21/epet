@@ -60,15 +60,16 @@ const Pet = () => {
                 setHatched(false)
                 setStateName(3)
             } else {
-                setHatched(true)
                 if (!userData.hatched) {
                     const dbRef = firebase.database().ref(userID)
                     const hatchedDate = new Date();
                     dbRef.update({
                         hatched: true,
-                        hatchedDate: hatchedDate.getTime()
+                        hatchedDate: hatchedDate.getTime(),
+                        lastFed: hatchedDate.getTime()
                     })
                 }
+                setHatched(true)
             }
         }
 
