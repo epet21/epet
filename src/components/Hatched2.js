@@ -1,5 +1,7 @@
 import firebase from "../firebase";
 import { useEffect, useState } from "react";
+import PhotoDisplayer from "./PhotoDisplayer";
+
 
 const Hatched2 = () => {
     const [petHealth, setPetHealth] = useState(0);
@@ -19,7 +21,7 @@ const Hatched2 = () => {
                     
                     if (fbObject.health <= 0) {
                         // Pet is ded. x_x (BAD ENDING)
-                        setStage("7")
+                        setStage("6")
                         console.log("Bad Ending")
                         return
                     }
@@ -28,6 +30,7 @@ const Hatched2 = () => {
                         if (now < fbObject.hatchedDate + 3600000) {
                             console.log("Smol BB")
                             setStage("1")
+
                         } else {
                             dbRef.update({
                                 state: 2,
@@ -144,11 +147,16 @@ const Hatched2 = () => {
         setFed(true)
     }
 
+
     return (
         <main>
             <h2>WOW! Look at your pet!</h2>
             <h3>Health: {petHealth}</h3>
+            <PhotoDisplayer 
+                stage={stage}
+            />
             <button onClick={foodz}>GIMME HEALTH</button>
+            
         </main>
     )
 }
