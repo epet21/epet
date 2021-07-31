@@ -31,3 +31,11 @@ Basic Overview:
  <!-- HANDLE ERRORS AND PAGE DISPLAYS IF LOGGED OUT? -->
 
  <!-- Change vars to let -->
+
+
+
+ <!-- 08/03:
+    Farm.js: When creating new pet, they're immediately aborted
+    Once functional, implement similar functionality to GameOver.js
+    Discuss sickness
+  -->

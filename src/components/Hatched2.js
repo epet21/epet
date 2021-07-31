@@ -1,13 +1,14 @@
 import firebase from "../firebase";
 import { useEffect, useState } from "react";
 import PhotoDisplayer from "./PhotoDisplayer";
-
+import { useHistory } from "react-router";
 
 const Hatched2 = () => {
     const [petHealth, setPetHealth] = useState(0);
     const [userID, setUserID] = useState(0);
     const [fed, setFed] = useState(false)
     const [stage, setStage] = useState(0)
+    let history = useHistory();
 
     useEffect(() => {
         const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -18,11 +19,22 @@ const Hatched2 = () => {
                     const now = date.getTime()
 
                     const fbObject = snapshot.val()
+
+                        if (fbObject.state == 5) {
+                        console.log("Good Ending")
+                        setStage("5")
+                        history.push("/farm");
+                        return
+                        // Pet is going to the "farm" x_x (GOOD ENDING)
+                    }
+
                     
                     if (fbObject.health <= 0) {
                         // Pet is ded. x_x (BAD ENDING)
                         setStage("6")
                         console.log("Bad Ending")
+
+                        history.push("/gameover");
                         return
                     }
             
@@ -87,11 +99,7 @@ const Hatched2 = () => {
                         // else, set age (state) to 5 + add 6 days to hatched date
                     }
             
-                    if (fbObject.state == 5) {
-                        console.log("Good Ending")
-                        setStage("5")
-                        // Pet is going to the "farm" x_x (GOOD ENDING)
-                    }
+
 
                 })
             } 
