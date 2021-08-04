@@ -23,19 +23,14 @@ Basic Overview:
 
  <!-- - Sleep? -->
 
- <!-- Dies after health depletes!! -->
+ - Dies after health depletes!!
 
  <!-- - Stats Module -->
  <!-- - - Age, Stuff -->
 
  <!-- HANDLE ERRORS AND PAGE DISPLAYS IF LOGGED OUT? -->
 
- <!-- Change vars to let -->
-
-
-
- <!-- 08/03:
-    Farm.js: When creating new pet, they're immediately aborted
-    Once functional, implement similar functionality to GameOver.js
-    Discuss sickness
-  -->
+- Farm.js: When creating new pet, they're immediately aborted
+  Once functional, implement similar functionality to GameOver.js
+  
+  <!-- Discuss Sickness -->
