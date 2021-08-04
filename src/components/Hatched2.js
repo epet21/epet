@@ -22,7 +22,7 @@ const Hatched2 = () => {
 
                         if (fbObject.state === 5) {
                         console.log("Good Ending")
-                        setStage("5")
+                        setStage(5)
                         history.push("/farm");
                         return
                         // Pet is going to the "farm" x_x (GOOD ENDING)
@@ -31,7 +31,7 @@ const Hatched2 = () => {
                     
                     if (fbObject.health <= 0) {
                         // Pet is ded. x_x (BAD ENDING)
-                        setStage("6")
+                        setStage(6)
                         console.log("Bad Ending")
 
                         history.push("/gameover");
@@ -41,14 +41,14 @@ const Hatched2 = () => {
                     if (fbObject.state === 1) {
                         if (now < fbObject.hatchedDate + 3600000) {
                             console.log("Smol BB")
-                            setStage("1")
+                            setStage(1)
 
                         } else {
                             dbRef.update({
                                 state: 2,
                                 hatchedDate: fbObject.hatchedDate + 3600000
                             });
-                            setStage("2")
+                            setStage(2)
                         }
                         // If now < hatched + 60 min, then display smol bb
                         // else, set age (state) to 2 + add 60 min to hatched date
@@ -57,13 +57,13 @@ const Hatched2 = () => {
                     if (fbObject.state === 2) {
                         if (now < fbObject.hatchedDate + 172800000) {
                             console.log("Child")
-                            setStage("2")
+                            setStage(2)
                         } else {
                             dbRef.update({
                                 state: 3,
                                 hatchedDate: fbObject.hatchedDate + 172800000
                             });
-                            setStage("3")
+                            setStage(3)
                         }
                         // If now < hatched + 2 days, then display child
                         // else, set age (state) to 3 + add 2 days to hatched date
@@ -72,13 +72,13 @@ const Hatched2 = () => {
                     if (fbObject.state === 3) {
                         if (now < fbObject.hatchedDate + 345600000) {
                             console.log("Teen")
-                            setStage("3")
+                            setStage(3)
                         } else {
                             dbRef.update({
                                 state: 4,
                                 hatchedDate: fbObject.hatchedDate + 345600000
                             });
-                            setStage("4")
+                            setStage(4)
                         }
                         // If now < hatched + 4 days, then display Teen
                         // else, set age (state) to 4 + add 4 days to hatched date
@@ -87,13 +87,13 @@ const Hatched2 = () => {
                     if (fbObject.state === 4) {
                         if (now < fbObject.hatchedDate + 518400000) {
                             console.log("Adult")
-                            setStage("4")
+                            setStage(4)
                         } else {
                             dbRef.update({
                                 state: 5,
                                 hatchedDate: fbObject.hatchedDate + 518400000
                             });
-                            setStage("5")
+                            setStage(5)
                         }
                         // If now < hatched + 6 days, then display Adult
                         // else, set age (state) to 5 + add 6 days to hatched date
