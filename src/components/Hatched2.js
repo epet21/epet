@@ -8,7 +8,7 @@ const Hatched2 = () => {
     const [userID, setUserID] = useState(0);
     const [fed, setFed] = useState(false)
     const [stage, setStage] = useState(0)
-    let history = useHistory();
+    const history = useHistory();
 
     useEffect(() => {
         const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -20,7 +20,7 @@ const Hatched2 = () => {
 
                     const fbObject = snapshot.val()
 
-                        if (fbObject.state == 5) {
+                        if (fbObject.state === 5) {
                         console.log("Good Ending")
                         setStage("5")
                         history.push("/farm");
@@ -38,7 +38,7 @@ const Hatched2 = () => {
                         return
                     }
             
-                    if (fbObject.state == 1) {
+                    if (fbObject.state === 1) {
                         if (now < fbObject.hatchedDate + 3600000) {
                             console.log("Smol BB")
                             setStage("1")
@@ -54,7 +54,7 @@ const Hatched2 = () => {
                         // else, set age (state) to 2 + add 60 min to hatched date
                     }
             
-                    if (fbObject.state == 2) {
+                    if (fbObject.state === 2) {
                         if (now < fbObject.hatchedDate + 172800000) {
                             console.log("Child")
                             setStage("2")
@@ -69,7 +69,7 @@ const Hatched2 = () => {
                         // else, set age (state) to 3 + add 2 days to hatched date
                     }
             
-                    if (fbObject.state == 3) {
+                    if (fbObject.state === 3) {
                         if (now < fbObject.hatchedDate + 345600000) {
                             console.log("Teen")
                             setStage("3")
@@ -84,7 +84,7 @@ const Hatched2 = () => {
                         // else, set age (state) to 4 + add 4 days to hatched date
                     }
             
-                    if (fbObject.state == 4) {
+                    if (fbObject.state === 4) {
                         if (now < fbObject.hatchedDate + 518400000) {
                             console.log("Adult")
                             setStage("4")
@@ -98,14 +98,11 @@ const Hatched2 = () => {
                         // If now < hatched + 6 days, then display Adult
                         // else, set age (state) to 5 + add 6 days to hatched date
                     }
-            
-
-
                 })
             } 
         })   
         return unsubscribe();
-    }, [stage]);
+    }, [stage, history]);
 
     useEffect( () => {
         const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -149,7 +146,7 @@ const Hatched2 = () => {
             }
         })
         return unsubscribe();
-    }, [fed]);
+    }, [fed, userID]);
 
     const foodz = () => {
         setFed(true)

@@ -22,23 +22,22 @@ const Farm = () => {
                             petName: event.target[0].value,
                             happy: 100,
                             hatched: false,
-                            hatchedDate: 0,
+                            hatchedDate: date.getTime(),
                             health: 100,
-                            lastFed: 0,
+                            lastFed: date.getTime(),
                             date: date.getTime(),
                             state: 1
                         })
                         event.target[0].value = '';
+                    }).then(() => {
+                        history.push("/");
                     })
                 }
             })
             unsubscribe();
-            history.push("/")
         }
 
-
-
-    return(
+    return (
         <div>
             <h1>HI FARMANDER SHAUN </h1>
             {/* Do we want to modal this bad boy? */}
@@ -49,7 +48,7 @@ const Farm = () => {
                 <button type="submit">Get an Egg!</button>
 
                 <h2>Your pet is going to a very happy place</h2>
-                <h2>You were a good pet owner :) </h2>
+                <h2>You were a good pet owner 😊 </h2>
                 <h5>Don't look into farm lore...</h5>
 
             </form>
