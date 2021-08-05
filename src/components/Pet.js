@@ -1,102 +1,103 @@
-import firebase from "../firebase";
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import egg1 from "../assets/egg1.png";
-import egg2 from "../assets/egg2.png";
-import egg3 from "../assets/egg3.png";
+import firebase from '../firebase';
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import egg1 from '../assets/egg1.png';
+import egg2 from '../assets/egg2.png';
+import egg3 from '../assets/egg3.png';
 
 const Pet = () => {
-    const [hatched, setHatched] = useState(false);
-    const [userData, setUserData] = useState({});
-    const [time, setTime] = useState(0);
-    const [stateName, setStateName] = useState(0);
-    const [userID, setUserID] = useState("");
-    const history = useHistory();
+  const [hatched, setHatched] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [time, setTime] = useState(0);
+  const [stateName, setStateName] = useState(0);
+  const [userID, setUserID] = useState('');
+  const history = useHistory();
 
-    if (hatched) {
-    history.push("/main");
-    }
+  if (hatched) {
+    history.push('/main');
+  }
 
-    const timer = () => {
+  const timer = () => {
     const date = new Date();
     setTime(date.getTime());
-    };
+  };
 
-    useEffect(() => {
-        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                setUserID(user.uid);
-                const dbRef = firebase.database().ref(user.uid);
-                dbRef.on("value", (data) => {
-                setUserData(data.val());
-                timer();
-                });
-            }
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setUserID(user.uid);
+        const dbRef = firebase.database().ref(user.uid);
+        dbRef.on('value', (data) => {
+          setUserData(data.val());
+          timer();
         });
+      }
+    });
 
-        unsubscribe();
+    unsubscribe();
 
-        const timingFunction = setInterval(timer, 3000); // 30!!!
+    const timingFunction = setInterval(timer, 3000); // 30!!!
 
-        // Cleans up timer
-        return () => {
-            clearInterval(timingFunction);
-        };
-    }, []);
+    // Cleans up timer
+    return () => {
+      clearInterval(timingFunction);
+    };
+  }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     // 30, 30, 30
 
     if (userData.date) {
-        if (userData.date + 3000 > time) {
-            setHatched(false);
-            setStateName(1);
-        } else if (userData.date + 6000 > time) {
-            setHatched(false);
-            setStateName(2);
-        } else if (userData.date + 9000 > time) {
-            setHatched(false);
-            setStateName(3);
-        } else {
-            if (!userData.hatched) {
-            const dbRef = firebase.database().ref(userID);
-            const hatchedDate = new Date();
-            dbRef.update({
-                hatched: true,
-                hatchedDate: hatchedDate.getTime(),
-                lastFed: hatchedDate.getTime(),
-            });
-            }
-            setHatched(true);
+      if (userData.date + 3000 > time) {
+        setHatched(false);
+        setStateName(1);
+      } else if (userData.date + 6000 > time) {
+        setHatched(false);
+        setStateName(2);
+      } else if (userData.date + 9000 > time) {
+        setHatched(false);
+        setStateName(3);
+      } else {
+        if (!userData.hatched) {
+          const dbRef = firebase.database().ref(userID);
+          const hatchedDate = new Date();
+          dbRef.update({
+            hatched: true,
+            hatchedDate: hatchedDate.getTime(),
+            lastFed: hatchedDate.getTime(),
+            lastFedNew: hatchedDate.getTime(),
+          });
         }
+        setHatched(true);
+      }
     }
 
     return;
-    }, [time, userData, userID]);
+  }, [time, userData, userID]);
 
-    function eggReturn() {
-        if (stateName === 1) {
-        return egg1;
-        } else if (stateName === 2) {
-        return egg2;
-        } else {
-        return egg3;
-        }
+  function eggReturn() {
+    if (stateName === 1) {
+      return egg1;
+    } else if (stateName === 2) {
+      return egg2;
+    } else {
+      return egg3;
     }
+  }
 
-    return (
-        <main>
-        {userData.date ? (
-            hatched ? (
-            <p>Wowza! Eggo Hatched!</p>
-            ) : (
-            <img src={eggReturn()} className="egg" alt={`Egg of ${stateName}`} />
-            )
+  return (
+    <main>
+      {userData.date ? (
+        hatched ? (
+          <p>Wowza! Eggo Hatched!</p>
         ) : (
-            <p>Loading...</p>
-        )}
-        </main>
-    );
+          <img src={eggReturn()} className="egg" alt={`Egg of ${stateName}`} />
+        )
+      ) : (
+        <p>Loading...</p>
+      )}
+    </main>
+  );
 };
 
 export default Pet;
