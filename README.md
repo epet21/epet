@@ -1,13 +1,3 @@
-Pet Timespan:
-
-- smol bb (60min)
-- child (2 days)
-- Teen (4 days)
-- adult (6 days)
-- Good death
-
-Basic Overview:
-
 - Create Pet (Hatch) [Multiple species]
 
     <!-- - Give Happiness (100 or 5 smiles) -->
@@ -21,3 +11,5 @@ Basic Overview:
 
 - Farm.js: When creating new pet, they're immediately aborted
   Once functional, implement similar functionality to GameOver.js
+
+<!-- Set sickness multiplier -->
