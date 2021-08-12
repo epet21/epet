@@ -37,7 +37,7 @@ const LogIn = () => {
           petName: petName,
           health: 100,
           happy: 100,
-          sick: 0,
+          sick: false,
           poop: 0,
         });
       })

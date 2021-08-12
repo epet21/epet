@@ -8,8 +8,9 @@ const Hatched2 = () => {
   const [userID, setUserID] = useState(0);
   const [fed, setFed] = useState(false);
   const [stage, setStage] = useState(0);
-  const [isSick, setIsSick] = useState(0);
+  const [isSick, setIsSick] = useState(false);
   const [poop, setPoop] = useState(0);
+  const [sickness, setSickness] = useState(4);
   const history = useHistory();
 
   useEffect(() => {
@@ -115,18 +116,30 @@ const Hatched2 = () => {
           const diff = now - snapshot.val().lastFed;
           // const hoursOfDamage = diff / 3600000
           const hoursOfDamage = diff / 60000;
-          const damage = Math.round(hoursOfDamage * 4);
+          const damage = Math.round(hoursOfDamage * sickness);
           const newHealth = snapshot.val().health - damage;
 
           if (fed) {
             console.log("I'm eat!");
 
-            const fedHealth = newHealth + 20;
+            let fedHealth = newHealth + 20;
+
+
+            if (fedHealth > 100) {
+              setIsSick(true);
+              firebase.database().ref(userID).update({
+                sick: true
+              })
+            }
+
+            if (fedHealth >= 120) {
+              fedHealth = 120;
+            }
 
             firebase.database().ref(userID).update({
               lastFed: now,
               lastFedNew: now,
-              health: fedHealth,
+              health: fedHealth
             });
 
             setPetHealth(fedHealth);
@@ -154,7 +167,7 @@ const Hatched2 = () => {
         const dbRef = firebase.database().ref(user.uid);
         dbRef.get().then((snapshot) => {
           if (snapshot.val().sick) {
-            setIsSick(1);
+            setIsSick(true);
           }
         });
       }
@@ -162,17 +175,21 @@ const Hatched2 = () => {
     return unsubscribe();
   }, []);
 
+
+
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const dbRef = firebase.database().ref(user.uid);
         const date = new Date();
         dbRef.get().then((snapshot) => {
-          if (snapshot.val().poop === 3) {
+          if (snapshot.val().poop === 4) {
+            return;
+          } else if (snapshot.val().poop === 3) {
             setPoop(3);
           } else if (snapshot.val().poop === 2) {
             setPoop(2);
-            if (date.getTime() > snapshot.val().lastFedNew + 3600000) {
+            if (date.getTime() > snapshot.val().lastFedNew + 10800000) {
               setPoop(3);
               dbRef.update({
                 poop: 3,
@@ -180,12 +197,12 @@ const Hatched2 = () => {
             }
           } else if (snapshot.val().poop === 1) {
             setPoop(1);
-            if (date.getTime() > snapshot.val().lastFedNew + 3600000) {
+            if (date.getTime() > snapshot.val().lastFedNew + 10800000) {
               setPoop(3);
               dbRef.update({
                 poop: 3,
               });
-            } else if (date.getTime() > snapshot.val().lastFedNew + 10000) {
+            } else if (date.getTime() > snapshot.val().lastFedNew + 7200000) {
               setPoop(2);
               dbRef.update({
                 poop: 2,
@@ -193,17 +210,17 @@ const Hatched2 = () => {
             }
           } else {
             setPoop(0);
-            if (date.getTime() > snapshot.val().lastFedNew + 3600000) {
+            if (date.getTime() > snapshot.val().lastFedNew + 10800000) {
               setPoop(3);
               dbRef.update({
                 poop: 3,
               });
-            } else if (date.getTime() > snapshot.val().lastFedNew + 10000) {
+            } else if (date.getTime() > snapshot.val().lastFedNew + 7200000) {
               setPoop(2);
               dbRef.update({
                 poop: 2,
               });
-            } else if (date.getTime() > snapshot.val().lastFedNew + 5000) {
+            } else if (date.getTime() > snapshot.val().lastFedNew + 3600000) {
               setPoop(1);
               dbRef.update({
                 poop: 1,
@@ -221,20 +238,23 @@ const Hatched2 = () => {
   };
 
   const halp = () => {
-    setIsSick(0);
+    setIsSick(false);
+    setPetHealth(100);
+
 
     const dbRef = firebase.database().ref(userID);
     dbRef.update({
-      sick: 0,
+      sick: false,
+      health: 100
     });
   };
 
   const cleanPoop = () => {
     if (poop) {
-      setPoop(poop - 1);
+      setPoop(0);
       const dbRef = firebase.database().ref(userID);
       dbRef.update({
-        poop: poop - 1,
+        poop: 4,
       });
     }
   };
