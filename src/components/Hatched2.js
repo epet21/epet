@@ -113,11 +113,29 @@ const Hatched2 = () => {
         dbRef.get().then((snapshot) => {
           const date = new Date();
           const now = date.getTime();
-          const diff = now - snapshot.val().lastFed;
-          // const hoursOfDamage = diff / 3600000
-          const hoursOfDamage = diff / 60000;
-          const damage = Math.round(hoursOfDamage * sickness);
-          const newHealth = snapshot.val().health - damage;
+          let newHealth;
+          if (snapshot.val().poopTime) {
+            // Calc last fed to pooptime
+            const initDamage = snapshot.val().poopTime - snapshot.val().lastFed;
+
+            // Calc pooptime to now
+            const multiDamage = now - snapshot.val().poopTime;
+
+            // Multiply
+            const damage = Math.round((initDamage / 3600000) * 4) + ((multiDamage / 3600000) * 6)
+            // CHANGE THIS BACK. FOR TESTING!!!!
+            newHealth = snapshot.val().health - damage;
+
+            // Remove poopTime
+            dbRef.child("poopTime").remove(); // ?????????????
+
+          } else {
+            const diff = now - snapshot.val().lastFed;
+            const hoursOfDamage = diff / 3600000
+            // const hoursOfDamage = diff / 60000;
+            const damage = Math.round(hoursOfDamage * sickness);
+            newHealth = snapshot.val().health - damage;
+          }
 
           if (fed) {
             console.log("I'm eat!");
@@ -223,6 +241,7 @@ const Hatched2 = () => {
             } else if (date.getTime() > snapshot.val().lastFedNew + 3600000) {
               setPoop(1);
               dbRef.update({
+                poopTime: snapshot.val().lastFedNew + 3600000,
                 poop: 1,
               });
             }
