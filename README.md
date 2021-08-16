@@ -13,3 +13,5 @@
   Once functional, implement similar functionality to GameOver.js
 
 <!-- Set sickness multiplier -->
+
+<!-- When setting poop to 3, change sickness state and sickness multiplier -->
