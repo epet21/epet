@@ -10,7 +10,7 @@ const Hatched2 = () => {
   const [stage, setStage] = useState(0);
   const [isSick, setIsSick] = useState(false);
   const [poop, setPoop] = useState(0);
-  const [sickness, setSickness] = useState(4);
+  // const [sickness, setSickness] = useState(4);
   const history = useHistory();
 
   useEffect(() => {
@@ -24,7 +24,6 @@ const Hatched2 = () => {
           const fbObject = snapshot.val();
 
           if (fbObject.state === 5) {
-            console.log('Good Ending');
             setStage(5);
             history.push('/farm');
             return;
@@ -34,7 +33,6 @@ const Hatched2 = () => {
           if (fbObject.health <= 0) {
             // Pet is ded. x_x (BAD ENDING)
             setStage(6);
-            console.log('Bad Ending');
 
             history.push('/gameover');
             return;
@@ -42,7 +40,6 @@ const Hatched2 = () => {
 
           if (fbObject.state === 1) {
             if (now < fbObject.hatchedDate + 3600000) {
-              console.log('Smol BB');
               setStage(1);
             } else {
               dbRef.update({
@@ -57,7 +54,6 @@ const Hatched2 = () => {
 
           if (fbObject.state === 2) {
             if (now < fbObject.hatchedDate + 172800000) {
-              console.log('Child');
               setStage(2);
             } else {
               dbRef.update({
@@ -72,7 +68,6 @@ const Hatched2 = () => {
 
           if (fbObject.state === 3) {
             if (now < fbObject.hatchedDate + 345600000) {
-              console.log('Teen');
               setStage(3);
             } else {
               dbRef.update({
@@ -87,7 +82,6 @@ const Hatched2 = () => {
 
           if (fbObject.state === 4) {
             if (now < fbObject.hatchedDate + 518400000) {
-              console.log('Adult');
               setStage(4);
             } else {
               dbRef.update({
@@ -122,32 +116,33 @@ const Hatched2 = () => {
             const multiDamage = now - snapshot.val().poopTime;
 
             // Multiply
-            const damage = Math.round((initDamage / 3600000) * 4) + ((multiDamage / 3600000) * 6)
+            const damage =
+              Math.round((initDamage / 3600000) * 4) +
+              Math.round((multiDamage / 3600000) * 6);
             // CHANGE THIS BACK. FOR TESTING!!!!
             newHealth = snapshot.val().health - damage;
+            // if (newHealth >= 120) {
+            //   newHealth = 120;
+            // }
 
             // Remove poopTime
-            dbRef.child("poopTime").remove(); // ?????????????
-
+            dbRef.child('poopTime').remove(); // ?????????????
           } else {
             const diff = now - snapshot.val().lastFed;
-            const hoursOfDamage = diff / 3600000
+            const hoursOfDamage = diff / 3600000;
             // const hoursOfDamage = diff / 60000;
-            const damage = Math.round(hoursOfDamage * sickness);
+            const damage = Math.round(hoursOfDamage * 4);
             newHealth = snapshot.val().health - damage;
           }
 
           if (fed) {
-            console.log("I'm eat!");
-
             let fedHealth = newHealth + 20;
-
 
             if (fedHealth > 100) {
               setIsSick(true);
               firebase.database().ref(userID).update({
-                sick: true
-              })
+                sick: true,
+              });
             }
 
             if (fedHealth >= 120) {
@@ -157,7 +152,7 @@ const Hatched2 = () => {
             firebase.database().ref(userID).update({
               lastFed: now,
               lastFedNew: now,
-              health: fedHealth
+              health: fedHealth,
             });
 
             setPetHealth(fedHealth);
@@ -192,8 +187,6 @@ const Hatched2 = () => {
     });
     return unsubscribe();
   }, []);
-
-
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -239,32 +232,36 @@ const Hatched2 = () => {
                 poop: 2,
               });
             } else if (date.getTime() > snapshot.val().lastFedNew + 3600000) {
-              setPoop(1);
               dbRef.update({
                 poopTime: snapshot.val().lastFedNew + 3600000,
                 poop: 1,
               });
+              setPoop(1);
             }
           }
         });
       }
     });
     return unsubscribe();
-  }, []);
+  }, [fed, poop]);
 
   const foodz = () => {
     setFed(true);
+
+    const dbRef = firebase.database().ref(userID);
+    dbRef.update({
+      poop: 0,
+    });
   };
 
   const halp = () => {
     setIsSick(false);
     setPetHealth(100);
 
-
     const dbRef = firebase.database().ref(userID);
     dbRef.update({
       sick: false,
-      health: 100
+      health: 100,
     });
   };
 
@@ -277,7 +274,6 @@ const Hatched2 = () => {
       });
     }
   };
-  console.log(isSick);
 
   return (
     <main>
