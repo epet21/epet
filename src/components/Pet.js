@@ -1,9 +1,8 @@
 import firebase from '../firebase';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import egg1 from '../assets/egg1.png';
-import egg2 from '../assets/egg2.png';
-import egg3 from '../assets/egg3.png';
+import pokemonEgg from '../assets/pokemonEgg.gif';
+
 
 const Pet = () => {
   const [hatched, setHatched] = useState(false);
@@ -77,11 +76,11 @@ const Pet = () => {
 
   function eggReturn() {
     if (stateName === 1) {
-      return egg1;
+      return pokemonEgg;
     } else if (stateName === 2) {
-      return egg2;
+      return pokemonEgg;
     } else {
-      return egg3;
+      return pokemonEgg;
     }
   }
 
@@ -91,7 +90,7 @@ const Pet = () => {
         hatched ? (
           <p>Wowza! Eggo Hatched!</p>
         ) : (
-          <img src={eggReturn()} className="egg" alt={`Egg of ${stateName}`} />
+          <img src={eggReturn()} className={`egg egg${stateName}`} alt={`Egg of ${stateName}`} />
         )
       ) : (
         <p>Loading...</p>

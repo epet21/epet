@@ -2,6 +2,9 @@ import firebase from '../firebase';
 import { useEffect, useState } from 'react';
 import PhotoDisplayer from './PhotoDisplayer';
 import { useHistory } from 'react-router';
+import berry from "../assets/cheriBerry.png";
+import potion from "../assets/potion.png";
+import buttwipe from "../assets/toiletPaper.png";
 
 const Hatched2 = () => {
   const [petHealth, setPetHealth] = useState(0);
@@ -10,6 +13,7 @@ const Hatched2 = () => {
   const [stage, setStage] = useState(0);
   const [isSick, setIsSick] = useState(false);
   const [poop, setPoop] = useState(0);
+  const [name, setName] = useState('');
   // const [sickness, setSickness] = useState(4);
   const history = useHistory();
 
@@ -22,6 +26,7 @@ const Hatched2 = () => {
           const now = date.getTime();
 
           const fbObject = snapshot.val();
+          setName(fbObject.petName);
 
           if (fbObject.state === 5) {
             setStage(5);
@@ -247,10 +252,12 @@ const Hatched2 = () => {
 
   const foodz = () => {
     setFed(true);
-
+    const date = new Date();
+    const now = date.getTime();
     const dbRef = firebase.database().ref(userID);
     dbRef.update({
       poop: 0,
+      lastFedNew: now
     });
   };
 
@@ -277,13 +284,15 @@ const Hatched2 = () => {
 
   return (
     <main>
-      <h2>WOW! Look at your pet!</h2>
-      <h3>Health: {petHealth}</h3>
-      <p>💩: {poop}</p>
       <PhotoDisplayer stage={stage} sick={isSick} />
-      <button onClick={foodz}>GIMME HEALTH</button>
-      <button onClick={halp}>CUREEEEEE</button>
-      <button onClick={cleanPoop}>❌💩</button>
+      <h2>{name}</h2>
+      <p>Health: {petHealth}</p>
+      <p>💩: {poop}</p>
+      <div className="buttDiv">
+        <button onClick={foodz}><img className="buttonImage" src={berry}/></button>
+        <button onClick={halp}><img className="buttonImage" src={potion}/></button>
+        <button onClick={cleanPoop}><img className="buttonImage" src={buttwipe}/></button>
+      </div>
     </main>
   );
 };
