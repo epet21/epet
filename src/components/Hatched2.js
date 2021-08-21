@@ -289,9 +289,9 @@ const Hatched2 = () => {
       <p>Health: {petHealth}</p>
       <p>💩: {poop}</p>
       <div className="buttDiv">
-        <button onClick={foodz}><img className="buttonImage" src={berry}/></button>
-        <button onClick={halp}><img className="buttonImage" src={potion}/></button>
-        <button onClick={cleanPoop}><img className="buttonImage" src={buttwipe}/></button>
+        <button onClick={foodz}><img className="buttonImage" src={berry} alt="Red berry. Recovers 20 H.P."/></button>
+        <button onClick={halp}><img className="buttonImage" src={potion} alt="Potion bottle. Cures sickness state."/></button>
+        <button onClick={cleanPoop}><img className="buttonImage" src={buttwipe} alt="Toilet Paper. Cleans up the pet's poop."/></button>
       </div>
     </main>
   );
